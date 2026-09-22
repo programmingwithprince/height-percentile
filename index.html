@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Page Title & SEO Identity -->
+  <title>Global Height Percentile Calculator & World Distribution ╱ tools.31415929.xyz</title>
+  <meta name="title" content="Global Height Percentile Calculator & World Distribution ╱ tools.31415929.xyz" />
+  <meta name="description" content="Calculate your exact height percentile across countries and worldwide populations. Compare normal distribution curves, global height rankings, and download verified telemetry visual cards." />
+  <meta name="keywords" content="height percentile calculator, global height distribution, am i tall, height comparison tool, average height by country, male height percentile, female height percentile, 31415929" />
+  <meta name="author" content="Prince (@programmingwithprince)" />
+  <link rel="canonical" href="https://tools.31415929.xyz/height-percentile/" />
+
+  <!-- Open Graph / Meta Cards -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tools.31415929.xyz/height-percentile/" />
+  <meta property="og:title" content="Global Height Percentile & World Distribution Calculator" />
+  <meta property="og:description" content="Check how tall you are compared to the rest of the world. Real-time bell curve calculation and country comparisons." />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/programmingwithprince" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@programmingwithprince" />
+  <meta name="twitter:creator" content="@programmingwithprince" />
+  <meta name="twitter:url" content="https://tools.31415929.xyz/height-percentile/" />
+  <meta name="twitter:title" content="Global Height Percentile & World Distribution Calculator" />
+  <meta name="twitter:description" content="Check how tall you are compared to the rest of the world. Real-time normal curve distribution telemetry." />
+  <meta name="twitter:image" content="https://avatars.githubusercontent.com/programmingwithprince" />
+
+  <!-- Schema.org Application Metadata -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Global Height Percentile Calculator",
+    "url": "https://tools.31415929.xyz/height-percentile/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Interactive statistical normal distribution height comparator and world percentile telemetry engine.",
+    "author": {
+      "@type": "Person",
+      "name": "Prince",
+      "url": "https://31415929.xyz/",
+      "sameAs": [
+        "https://github.com/programmingwithprince"
+      ]
+    }
+  }
+  </script>
+
+  <!-- Typography & External Engines -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="dashboard-terminal" id="capture-region">
+    
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">
+            Global Height Percentile
+            <a href="https://tools.31415929.xyz/height-percentile/" class="subdomain-tag">tools.31415929.xyz</a>
+          </div>
+          <div class="brand-sub">Statistical Distribution Lab</div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="control-block">
+          <label class="control-label" for="country-selector">Country Cohort</label>
+          <select id="country-selector" class="dropdown-input"></select>
+        </div>
+
+        <div class="control-block">
+          <label class="control-label">Biological Cohort</label>
+          <div class="gender-pill-container">
+            <button id="btn-male" class="gender-toggle-btn active" type="button">Male</button>
+            <button id="btn-female" class="gender-toggle-btn" type="button">Female</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Center Display -->
+    <main class="dashboard-body">
+      <!-- Bell Curve -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <span>Gaussian Density Function (Bell Curve)</span>
+          <span id="mean-indicator" class="accent-text">Mean: -- cm</span>
+        </div>
+        <div class="density-canvas-box" id="canvas-wrapper">
+          <canvas id="bellCurveCanvas"></canvas>
+        </div>
+      </section>
+
+      <!-- World Map -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <span>Global Comparison Map</span>
+          <span class="sub-hint">Click Region • Hover Telemetry</span>
+        </div>
+        <div class="map-container" id="map-wrapper">
+          <svg id="world-map-svg" width="100%" height="100%"></svg>
+          <div class="map-tooltip" id="map-tooltip">
+            <div class="map-tooltip-title" id="tt-region">--</div>
+            <div class="map-tooltip-stat">Avg: <span id="tt-avg">-- cm</span></div>
+            <div class="map-tooltip-stat">Your Percentile: <span id="tt-pct">--%</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Readout -->
+    <section class="bottom-metrics">
+      <div class="stat-card">
+        <div class="stat-label">Cohort Average</div>
+        <div class="stat-value"><span id="metric-avg">--</span> <span class="unit">CM</span></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Global Rank</div>
+        <div class="stat-value accent"><span id="metric-rank">#--</span></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Percentile Standing</div>
+        <div class="stat-value accent"><span id="metric-percentile">--</span>%</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="predict-form">
+          <div class="control-block" style="flex: 1;">
+            <label class="control-label" for="user-height-input">Your Height (CM)</label>
+            <div class="input-unit-wrapper">
+              <input type="number" id="user-height-input" class="input-number" value="180.2" step="0.5" min="100" max="250" />
+              <span class="unit">cm</span>
+            </div>
+          </div>
+          <div class="actions-group">
+            <button class="action-btn" id="btn-download" type="button" title="Save Telemetry Snapshot">Snapshot PNG</button>
+            <button class="action-btn highlight" id="btn-share" type="button" title="Share With Friends">Share Card</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Telemetry Disclaimer Notification -->
+    <div class="disclaimer-bar">
+      <span class="warn-badge">[STATISTICAL NOTE]</span>
+      Estimations are synthesized from self-reported health surveys and international observational studies. Biological variance may not reflect clinical diagnosis.
+    </div>
+
+    <!-- Branded Terminal Footer -->
+    <footer class="terminal-footer">
+      <div class="footer-links">
+        <span class="badge-live">NODE ACTIVE</span>
+        <span>GATEWAY: <a href="https://tools.31415929.xyz/height-percentile/" class="footer-link">tools.31415929.xyz/height-percentile/</a></span>
+        <span>•</span>
+        <span>ORIGIN: <a href="https://31415929.xyz" class="footer-link">31415929.xyz</a></span>
+      </div>
+
+      <div class="footer-author">
+        SYSTEM DESIGN BY <a href="https://github.com/programmingwithprince" target="_blank" rel="noopener">PRINCE (@programmingwithprince)</a>
+      </div>
+
+      <div id="footer-utc">UTC: 00:00:00</div>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast">Telemetry link copied to clipboard!</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
